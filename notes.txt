@@ -1,0 +1,2 @@
+module1-button logic: machine should record one vote if user presses the button for 1 second and if it is more than one second than it should be 1 vote only
+module2-votelogger: to keep track of who has the vote

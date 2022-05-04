@@ -1,7 +1,8 @@
-module vote_logger(clock,reset,valid_vote,vote_count_c1,vote_count_c2,vote_count_c3,vote_count_c4)
+`timescale 1ns / 1ps
+module vote_logger(clock,reset,valid_vote,vote_count_c1,vote_count_c2,vote_count_c3,vote_count_c4);
 input clock,reset;
 input [3:0] valid_vote;
-output [7:0] vote_count_c1,vote_count_c2,vote_count_c3,vote_count_c4;
+output reg [7:0] vote_count_c1,vote_count_c2,vote_count_c3,vote_count_c4;
 
 always @(posedge clock)
 begin
@@ -31,6 +32,5 @@ begin
             vote_count_c4 <= vote_count_c4 + 1;
         end
     end
-end
 end
 endmodule

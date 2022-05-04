@@ -1,17 +1,16 @@
-module evm(buttons,clock,reset,mode,winning_votes,seven_seg)
-    input [3:0] buttons;
+`timescale 1ns / 1ps
+module evm(buttons,clock,reset,mode,winning_led,seven_seg);
+    input[3:0] buttons;
     input clock,reset,mode;
-    output [7:0] winning_votes;
-    output [3:0] winning_led;
-    output [7:0] seven_seg;
+    output reg [3:0] winning_led;
+    output [6:0] seven_seg;
 
     wire [3:0] valid_vote;
     wire [7:0] vote_count_c1;
     wire [7:0] vote_count_c2;
     wire [7:0] vote_count_c3;
     wire [7:0] vote_count_c4;
-    wire winner;
-    wire winning_votes;
+    wire [7:0] winning_votes;
 
     button_control b1(
         .button(buttons[0]),
@@ -44,16 +43,7 @@ module evm(buttons,clock,reset,mode,winning_votes,seven_seg)
         .mode(mode),
         .vote(valid_vote[3])
     );
-
-    votelogger vl(
-        .clock(clock),
-        .reset(reset),
-        .valid_vote(valid_vote),
-        .vote_count_c1(vote_count_c1);
-        .vote_count_c2(vote_count_c2);
-        .vote_count_c3(vote_count_c3);
-        .vote_count_c4(vote_count_c4);
-    );
+    vote_logger vl(clock,reset,valid_vote,vote_count_c1,vote_count_c2,vote_count_c3,vote_count_c4);
     find_winning_vote fwv(
         .clock(clock),
         .reset(reset),
@@ -62,22 +52,11 @@ module evm(buttons,clock,reset,mode,winning_votes,seven_seg)
         .vote_count_c3(vote_count_c3),
         .vote_count_c4(vote_count_c4),
         .winning_votes(winning_votes),
-        .winner(winner)
+        .winner(winning_led)
     );
-    if(mode)
-    begin
-    assign winning_led[winner-1]=1;
-    end
 
     display_winning_votes dwv(
         .winning_votes(winning_votes),
         .seven_seg(seven_seg)
-    )
-
-
-
-
-
-
-
+    );
 endmodule

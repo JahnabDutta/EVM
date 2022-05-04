@@ -1,4 +1,5 @@
-module button_control(clock,reset,button,mode,vote)
+`timescale 1ns / 1ps
+module button_control(clock,reset,button,mode,vote);
 input clock;
 input reset;
 input button;
@@ -15,7 +16,7 @@ begin
     end
     else
     begin
-        if(button && counter <100000001)
+        if(button && counter <101)
         begin
             counter <= counter + 1;
         end
@@ -34,7 +35,7 @@ begin
     end
     else
     begin
-        if(counter == 100000000 && !mode)
+        if(counter == 100 && !mode)
         begin
             vote <= 1;
         end
@@ -43,6 +44,5 @@ begin
             vote <= 0;
         end
     end
-end
 end
 endmodule
